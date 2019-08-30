@@ -1,7 +1,6 @@
 package info.funds.rxjavasearch.network;
 
 import info.funds.rxjavasearch.network.model.FundsWrapper;
-import info.funds.rxjavasearch.network.model.MovieWrapper;
 import io.reactivex.Single;
 import retrofit2.http.GET;
 
