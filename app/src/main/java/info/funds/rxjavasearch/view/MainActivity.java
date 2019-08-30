@@ -1,4 +1,4 @@
-package info.movies.rxjavasearch.view;
+package info.funds.rxjavasearch.view;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,7 +10,7 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.movies.rxjavasearch.R;
+import info.funds.rxjavasearch.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,10 +26,9 @@ public class MainActivity extends AppCompatActivity {
         whiteNotificationBar(toolbar);
     }
 
-    @OnClick(R.id.btn_local_search)
+    @OnClick(R.id.btn_fund_search)
     public void openSearch() {
-        // search movies locally
-        startActivity(new Intent(MainActivity.this, LocalSearchActivity.class));
+        startActivity(new Intent(MainActivity.this, FundListActivity.class));
     }
 
     private void whiteNotificationBar(View view) {

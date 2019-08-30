@@ -1,11 +1,11 @@
-package info.movies.rxjavasearch.network;
+package info.funds.rxjavasearch.network;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import info.movies.rxjavasearch.app.Const;
+import info.funds.rxjavasearch.app.Const;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,7 +15,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created on : August 16, 2019
+ * Created on : August 30, 2019
  * Author     : Setia
  */
 

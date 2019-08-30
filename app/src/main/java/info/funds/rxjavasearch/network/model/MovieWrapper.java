@@ -1,11 +1,11 @@
-package info.movies.rxjavasearch.network.model;
+package info.funds.rxjavasearch.network.model;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 /**
- * Created on : August 16, 2019
+ * Created on : August 30, 2019
  * Author     : Setia
  */
 

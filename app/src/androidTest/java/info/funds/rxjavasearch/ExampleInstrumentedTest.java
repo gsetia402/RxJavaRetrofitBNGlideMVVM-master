@@ -1,4 +1,4 @@
-package info.movies.rxjavasearch;
+package info.funds.rxjavasearch;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("info.movies.rxjavasearch", appContext.getPackageName());
+        assertEquals("info.funds.rxjavasearch", appContext.getPackageName());
     }
 }

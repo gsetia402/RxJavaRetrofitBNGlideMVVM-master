@@ -1,4 +1,4 @@
-package info.movies.rxjavasearch;
+package info.funds.rxjavasearch;
 
 import org.junit.Test;
 

@@ -1,9 +1,10 @@
-package info.movies.rxjavasearch.view;
+package info.funds.rxjavasearch.view;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.jakewharton.rxbinding2.widget.RxTextView;
 import com.jakewharton.rxbinding2.widget.TextViewTextChangeEvent;
@@ -25,47 +27,47 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import info.movies.rxjavasearch.R;
-import info.movies.rxjavasearch.adapter.MoviesAdapterFilterable;
-import info.movies.rxjavasearch.network.ApiClient;
-import info.movies.rxjavasearch.network.ApiService;
-import info.movies.rxjavasearch.network.model.Movie;
-import info.movies.rxjavasearch.network.model.MovieWrapper;
+import info.funds.rxjavasearch.R;
+import info.funds.rxjavasearch.adapter.FundsAdapterFilterable;
+import info.funds.rxjavasearch.network.ApiClient;
+import info.funds.rxjavasearch.network.ApiService;
+import info.funds.rxjavasearch.network.model.Funds;
+import info.funds.rxjavasearch.network.model.FundsWrapper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class LocalSearchActivity extends AppCompatActivity implements MoviesAdapterFilterable.MoviesAdapterListener {
+public class FundListActivity extends AppCompatActivity implements FundsAdapterFilterable.FundsAdapterListener {
 
-    private static final String TAG = LocalSearchActivity.class.getSimpleName();
+    private static final String TAG = FundListActivity.class.getSimpleName();
     @BindView(R.id.input_search)
     EditText inputSearch;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
     private CompositeDisposable disposable = new CompositeDisposable();
     private ApiService apiService;
-    private MoviesAdapterFilterable mAdapter;
-    private List<Movie> moviesList = new ArrayList<>();
+    private FundsAdapterFilterable mAdapter;
+    private List<Funds> fundsList = new ArrayList<>();
     private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_local_search);
+        setContentView(R.layout.activity_funds);
         unbinder = ButterKnife.bind(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mAdapter = new MoviesAdapterFilterable(this, moviesList, this);
+        mAdapter = new FundsAdapterFilterable(this, fundsList, this);
 
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
         } else {
-            recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
         }
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -84,11 +86,11 @@ public class LocalSearchActivity extends AppCompatActivity implements MoviesAdap
                 .distinctUntilChanged()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(searchMovies()));
-        fetchMovies();
+                .subscribeWith(searchFunds()));
+        fetchFunds();
     }
 
-    private DisposableObserver<TextViewTextChangeEvent> searchMovies() {
+    private DisposableObserver<TextViewTextChangeEvent> searchFunds() {
         return new DisposableObserver<TextViewTextChangeEvent>() {
             @Override
             public void onNext(TextViewTextChangeEvent textViewTextChangeEvent) {
@@ -109,21 +111,21 @@ public class LocalSearchActivity extends AppCompatActivity implements MoviesAdap
     }
 
 
-    // fetch Movies
-    private void fetchMovies() {
+    // fetch fund Listr
+    private void fetchFunds() {
 
         disposable.add(
                 apiService
-                        .getMovie()
+                        .getFunds()
                         .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<MovieWrapper>() {
+                        .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<FundsWrapper>() {
 
 
                     @Override
-                    public void onSuccess(MovieWrapper movieWrapper) {
-                        Log.e("onSuccess", movieWrapper.toString());
-                        moviesList.clear();
-                        moviesList.addAll(movieWrapper.getMovie());
+                    public void onSuccess(FundsWrapper fundWrapper) {
+                        Log.e("onSuccess", fundWrapper.toString());
+                        fundsList.clear();
+                        fundsList.addAll(fundWrapper.getFunds());
                         mAdapter.notifyDataSetChanged();
 
                     }
@@ -144,11 +146,6 @@ public class LocalSearchActivity extends AppCompatActivity implements MoviesAdap
     }
 
 
-    @Override
-    public void onMovieSelected(Movie movie) {
-        // callback here
-    }
-
     private void whiteNotificationBar(View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int flags = view.getSystemUiVisibility();
@@ -164,5 +161,11 @@ public class LocalSearchActivity extends AppCompatActivity implements MoviesAdap
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onFundSelected(Funds funds) {
+        Toast.makeText(this, funds.getName(),Toast.LENGTH_SHORT).show();
+
     }
 }
