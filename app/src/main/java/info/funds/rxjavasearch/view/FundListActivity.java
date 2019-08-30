@@ -4,7 +4,6 @@ import android.content.res.Configuration;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -41,11 +40,14 @@ import io.reactivex.schedulers.Schedulers;
 
 public class FundListActivity extends AppCompatActivity implements FundsAdapterFilterable.FundsAdapterListener {
 
-    private static final String TAG = FundListActivity.class.getSimpleName();
+    private static final String TAG = "FundListActivity";
+
     @BindView(R.id.input_search)
     EditText inputSearch;
+
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
+
     private CompositeDisposable disposable = new CompositeDisposable();
     private ApiService apiService;
     private FundsAdapterFilterable mAdapter;
@@ -165,7 +167,7 @@ public class FundListActivity extends AppCompatActivity implements FundsAdapterF
 
     @Override
     public void onFundSelected(Funds funds) {
-        Toast.makeText(this, funds.getName(),Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, funds.getName(), Toast.LENGTH_SHORT).show();
 
     }
 }
