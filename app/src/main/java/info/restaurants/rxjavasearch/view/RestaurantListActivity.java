@@ -1,4 +1,4 @@
-package info.funds.rxjavasearch.view;
+package info.restaurants.rxjavasearch.view;
 
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -26,19 +26,19 @@ import java.util.concurrent.TimeUnit;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import info.funds.rxjavasearch.R;
-import info.funds.rxjavasearch.adapter.FundsAdapterFilterable;
-import info.funds.rxjavasearch.network.ApiClient;
-import info.funds.rxjavasearch.network.ApiService;
-import info.funds.rxjavasearch.network.model.Funds;
-import info.funds.rxjavasearch.network.model.FundsWrapper;
+import info.restaurants.rxjavasearch.R;
+import info.restaurants.rxjavasearch.adapter.RestaurantAdapterFilterable;
+import info.restaurants.rxjavasearch.network.ApiClient;
+import info.restaurants.rxjavasearch.network.ApiService;
+import info.restaurants.rxjavasearch.network.model.Restaurant;
+import info.restaurants.rxjavasearch.network.model.RestaurantWrapper;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.observers.DisposableSingleObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class FundListActivity extends AppCompatActivity implements FundsAdapterFilterable.FundsAdapterListener {
+public class RestaurantListActivity extends AppCompatActivity implements RestaurantAdapterFilterable.RestaurantAdapterListener {
 
     private static final String TAG = "FundListActivity";
 
@@ -50,21 +50,21 @@ public class FundListActivity extends AppCompatActivity implements FundsAdapterF
 
     private CompositeDisposable disposable = new CompositeDisposable();
     private ApiService apiService;
-    private FundsAdapterFilterable mAdapter;
-    private List<Funds> fundsList = new ArrayList<>();
+    private RestaurantAdapterFilterable mAdapter;
+    private List<Restaurant> restaurantList = new ArrayList<>();
     private Unbinder unbinder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_funds);
+        setContentView(R.layout.activity_restaurant);
         unbinder = ButterKnife.bind(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mAdapter = new FundsAdapterFilterable(this, fundsList, this);
+        mAdapter = new RestaurantAdapterFilterable(this, restaurantList, this);
 
         if (this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 1));
@@ -89,7 +89,7 @@ public class FundListActivity extends AppCompatActivity implements FundsAdapterF
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(searchFunds()));
-        fetchFunds();
+        fetchRest();
     }
 
     private DisposableObserver<TextViewTextChangeEvent> searchFunds() {
@@ -114,20 +114,20 @@ public class FundListActivity extends AppCompatActivity implements FundsAdapterF
 
 
     // fetch fund Listr
-    private void fetchFunds() {
+    private void fetchRest() {
 
         disposable.add(
                 apiService
-                        .getFunds()
+                        .getRestaurant()
                         .subscribeOn(Schedulers.io())
-                        .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<FundsWrapper>() {
+                        .observeOn(AndroidSchedulers.mainThread()).subscribeWith(new DisposableSingleObserver<RestaurantWrapper>() {
 
 
                     @Override
-                    public void onSuccess(FundsWrapper fundWrapper) {
-                        Log.e("onSuccess", fundWrapper.toString());
-                        fundsList.clear();
-                        fundsList.addAll(fundWrapper.getFunds());
+                    public void onSuccess(RestaurantWrapper restaurantWrapper) {
+                        Log.e("onSuccess", restaurantWrapper.toString());
+                        restaurantList.clear();
+                        restaurantList.addAll(restaurantWrapper.getRestaurant());
                         mAdapter.notifyDataSetChanged();
 
                     }
@@ -166,8 +166,8 @@ public class FundListActivity extends AppCompatActivity implements FundsAdapterF
     }
 
     @Override
-    public void onFundSelected(Funds funds) {
-        Toast.makeText(this, funds.getName(), Toast.LENGTH_SHORT).show();
+    public void onRestaurant(Restaurant restaurant) {
+        Toast.makeText(this, restaurant.getRestaurant().getName(), Toast.LENGTH_SHORT).show();
 
     }
 }

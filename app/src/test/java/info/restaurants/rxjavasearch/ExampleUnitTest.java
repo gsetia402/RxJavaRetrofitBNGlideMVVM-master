@@ -1,4 +1,4 @@
-package info.funds.rxjavasearch;
+package info.restaurants.rxjavasearch;
 
 import org.junit.Test;
 

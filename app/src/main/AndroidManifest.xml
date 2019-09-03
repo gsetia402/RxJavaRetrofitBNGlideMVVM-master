@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="info.funds.rxjavasearch">
+    package="info.restaurants.rxjavasearch">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -11,7 +11,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="info.funds.rxjavasearch.view.MainActivity"
+            android:name="info.restaurants.rxjavasearch.view.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -21,8 +21,8 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="info.funds.rxjavasearch.view.FundListActivity"
-            android:label="@string/activity_funds"
+            android:name="info.restaurants.rxjavasearch.view.RestaurantListActivity"
+            android:label="@string/activity_restautant"
             android:windowSoftInputMode="stateHidden"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>

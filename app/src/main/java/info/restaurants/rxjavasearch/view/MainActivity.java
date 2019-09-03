@@ -1,4 +1,4 @@
-package info.funds.rxjavasearch.view;
+package info.restaurants.rxjavasearch.view;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -10,7 +10,7 @@ import android.view.View;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import info.funds.rxjavasearch.R;
+import info.restaurants.rxjavasearch.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.btn_fund_search)
     public void openSearch() {
-        startActivity(new Intent(MainActivity.this, FundListActivity.class));
+        startActivity(new Intent(MainActivity.this, RestaurantListActivity.class));
     }
 
     private void whiteNotificationBar(View view) {

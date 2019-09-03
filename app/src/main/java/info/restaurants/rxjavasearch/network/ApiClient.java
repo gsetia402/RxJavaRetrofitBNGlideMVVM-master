@@ -1,11 +1,13 @@
-package info.funds.rxjavasearch.network;
+package info.restaurants.rxjavasearch.network;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
-import info.funds.rxjavasearch.app.Const;
+import info.restaurants.rxjavasearch.app.Const;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -15,7 +17,7 @@ import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
- * Created on : August 30, 2019
+ * Created on : sep 3, 2019
  * Author     : Setia
  */
 
@@ -32,11 +34,16 @@ public class ApiClient {
             initOkHttp();
 
         if (retrofit == null) {
+
+            Gson gson = new GsonBuilder()
+                    .setLenient()
+                    .create();
+
             retrofit = new Retrofit.Builder()
                     .baseUrl(Const.BASE_URL)
                     .client(okHttpClient)
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .build();
         }
         return retrofit;
@@ -60,6 +67,7 @@ public class ApiClient {
                 Request.Builder requestBuilder = original.newBuilder()
                         .addHeader("Accept", "application/json")
                         .addHeader("Request-Type", "Android")
+                        .addHeader("user-key", "fc79ca766814f4554248c555d50d3951")
                         .addHeader("Content-Type", "application/json");
 
                 Request request = requestBuilder.build();

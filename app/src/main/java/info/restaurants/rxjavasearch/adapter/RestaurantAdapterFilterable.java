@@ -1,4 +1,4 @@
-package info.funds.rxjavasearch.adapter;
+package info.restaurants.rxjavasearch.adapter;
 
 /**
  * Created on : August 30, 2019
@@ -20,21 +20,21 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
-import info.funds.rxjavasearch.R;
-import info.funds.rxjavasearch.network.model.Funds;
+import info.restaurants.rxjavasearch.R;
+import info.restaurants.rxjavasearch.network.model.Restaurant;
 
-public class FundsAdapterFilterable extends RecyclerView.Adapter<FundsAdapterFilterable.MyViewHolder>
+public class RestaurantAdapterFilterable extends RecyclerView.Adapter<RestaurantAdapterFilterable.MyViewHolder>
         implements Filterable {
     private Context context;
-    private List<Funds> fundsList;
-    private List<Funds> fundListFiltered;
-    private FundsAdapterListener listener;
+    private List<Restaurant> restaurantList;
+    private List<Restaurant> resListFilteres;
+    private RestaurantAdapterListener listener;
 
-    public FundsAdapterFilterable(Context context, List<Funds> fundsList, FundsAdapterListener listener) {
+    public RestaurantAdapterFilterable(Context context, List<Restaurant> restaurantList, RestaurantAdapterListener listener) {
         this.context = context;
         this.listener = listener;
-        this.fundsList = fundsList;
-        this.fundListFiltered = fundsList;
+        this.restaurantList = restaurantList;
+        this.resListFilteres = restaurantList;
     }
 
     @Override
@@ -47,21 +47,19 @@ public class FundsAdapterFilterable extends RecyclerView.Adapter<FundsAdapterFil
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
-        final Funds funds = fundListFiltered.get(position);
-        holder.name.setText(funds.getName());
-        holder.category.setText(funds.getFundCategory());
-        holder.rating.setText("" + funds.getRating());
-        holder.interest.setText(funds.getNav());
+        final Restaurant restaurant = resListFilteres.get(position);
+        holder.name.setText(restaurant.getRestaurant().getName());
+        holder.category.setText(restaurant.getRestaurant().getEvents_url());
 
 
         Glide.with(context)
-                .load(funds.getIcon())
+                .load(restaurant.getRestaurant().getThumb())
                 .into(holder.icon);
     }
 
     @Override
     public int getItemCount() {
-        return fundListFiltered.size();
+        return resListFilteres.size();
     }
 
     @Override
@@ -71,34 +69,34 @@ public class FundsAdapterFilterable extends RecyclerView.Adapter<FundsAdapterFil
             protected FilterResults performFiltering(CharSequence charSequence) {
                 String charString = charSequence.toString();
                 if (charString.isEmpty()) {
-                    fundListFiltered = fundsList;
+                    resListFilteres = restaurantList;
                 } else {
-                    List<Funds> filteredList = new ArrayList<>();
-                    for (Funds row : fundsList) {
+                    List<Restaurant> filteredList = new ArrayList<>();
+                    for (Restaurant row : restaurantList) {
 
-                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
+                        if (row.getRestaurant().getName().toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
                         }
                     }
 
-                    fundListFiltered = filteredList;
+                    resListFilteres = filteredList;
                 }
 
                 FilterResults filterResults = new FilterResults();
-                filterResults.values = fundListFiltered;
+                filterResults.values = resListFilteres;
                 return filterResults;
             }
 
             @Override
             protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                fundListFiltered = (ArrayList<Funds>) filterResults.values;
+                resListFilteres = (ArrayList<Restaurant>) filterResults.values;
                 notifyDataSetChanged();
             }
         };
     }
 
-    public interface FundsAdapterListener {
-        void onFundSelected(Funds funds);
+    public interface RestaurantAdapterListener {
+        void onRestaurant(Restaurant restaurant);
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
@@ -116,8 +114,8 @@ public class FundsAdapterFilterable extends RecyclerView.Adapter<FundsAdapterFil
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    // send selected fund in callback
-                    listener.onFundSelected(fundListFiltered.get(getAdapterPosition()));
+                    // send selected restaursnt in callback
+                    listener.onRestaurant(resListFilteres.get(getAdapterPosition()));
                 }
             });
         }
